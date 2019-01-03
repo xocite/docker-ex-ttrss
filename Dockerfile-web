@@ -1,0 +1,10 @@
+FROM php:7.2-apache
+WORKDIR /var/www/html
+RUN apt-get update && apt-get install -y libpq-dev git libpng-dev libfreetype6-dev libjpeg62-turbo-dev libxml2-dev
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include --with-jpeg-dir=/usr/include
+RUN docker-php-ext-configure xml --with-libxml-dir=/usr/include
+RUN docker-php-ext-install pdo_pgsql mbstring json gd xml opcache pgsql intl
+RUN docker-php-ext-enable opcache
+RUN git clone https://tt-rss.org/git/tt-rss.git ./
+RUN chown -R www-data:www-data /var/www/html
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
