@@ -3,7 +3,7 @@ services:
   database:
     image: postgres
     volumes:
-    - ./database_vol:/var/lib/postgresql
+    - /var/lib/postgresql
     environment:
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: docker
@@ -16,6 +16,8 @@ services:
       dockerfile: Dockerfile-web
     networks:
     - net-backend
+    volumes:
+    - /var/www/html
     ports:
     - "8080:80"
     depends_on:
