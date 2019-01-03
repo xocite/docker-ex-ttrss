@@ -1,0 +1,26 @@
+version: "2"
+services:
+  database:
+    image: postgres
+    volumes:
+    - ./database_vol:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+    networks:
+    - net-backend
+
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile-web
+    networks:
+    - net-backend
+    ports:
+    - "8080:80"
+    depends_on:
+    -  database
+
+networks:
+  net-backend:
+    driver: bridge
